@@ -43,6 +43,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         self.processclass=processspectrafile()
         self.processclass_ave=processspectrafile()
         self.plotwsetup()
+        self.xrng_0=None
         
     def selectrawpath(self, markstr='Renishaw .txt file from file converter'):
         le=self.rawpathLineEdit
@@ -148,17 +149,17 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         sampletable_colinds=[l_lines[0].index(s) for s in sampletable_keys if s in l_lines[0]]
         if len(sampletable_colinds)!=5:
             return 'did not find 5 columns, only found these column indeces: %s' %','.join(['%d' %i for i in sampletable_colinds])
-        self.smparr, self.xrng_0,self.xrng_1,self.yrng_0,self.yrng_1=[numpy.float32([l[i] for l in l_lines[1:]]) for i in sampletable_colinds]
-        self.smparr=numpy.int32(self.smparr)#not great practice to confer str to float to int but oh well
+        self.smparr=numpy.int32([l[sampletable_colinds[0]] for l in l_lines[1:]])
+        self.xrng_0,self.xrng_1,self.yrng_0,self.yrng_1=[numpy.float32([l[i] for l in l_lines[1:]]) for i in sampletable_colinds[1:]]
         return False
     def match(self, copypath=None):
         savefolder=str(self.savepathLineEdit.text())
         tryagain=not os.path.isdir(savefolder)
         while tryagain:
-            self.selectrawpath()
+            self.selectsavefolder()
             tryagain=messageDialog(self, 'Save folder does not exist. Try again?').exec_()
             if tryagain:
-                self.selectrawpath()
+                self.selectsavefolder()
                 savefolder=str(self.savepathLineEdit.text())
                 tryagain=not os.path.isdir(savefolder)
             else:
@@ -243,6 +244,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         
         self.sampleComboBox.clear()
         self.samplespectra_filedlist=[]
+        self.avespectra_filedlist=[]
         smpset=sorted(list(set(smp_filelines)))
         
         
@@ -255,18 +257,20 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
             strlist+=[[wnv]+[listv[count] for listv in list_lines] for count, wnv in enumerate(self.Wavenumbers_str)]
             fp=os.path.join(savefolder, 'Sample%d_selectspectra.rmn' %smpv)
             filed={}
-            filed['num_header_lines']=3
+            filed['num_header_lines']=3#this line, the raman_file_lines_spectra line, and the column headings
             filed['num_data_rows']=len(self.Wavenumbers_str)
             filed['num_data_columns']=len(inds_fileinds)+1
             filed['path']=fp
             
-            headstrlist=['%d\t%d\t%d\t%d' %(1, filed['num_data_columns'], filed['num_data_rows'], filed['num_header_lines']-2)]
-            try:#this info not availebl if sample info read from file
+            
+            if not self.xrng_0 is None:#this info not availebl if sample info read from file
                 selecttableind=list(self.smparr).index(smpv)
-                headstrlist+=['%s: %.1f' %(k, arr[selecttableind]) for k, arr in zip('xrng_0,xrng_1,yrng_0,yrng_1'.split(','), [self.xrng_0,self.xrng_1,self.yrng_0,self.yrng_1])]
-                filed['num_header_lines']+=4
-            except:
-                pass
+                addlines=['%s: %.1f' %(k, arr[selecttableind]) for k, arr in zip('xrng_0,xrng_1,yrng_0,yrng_1'.split(','), [self.xrng_0,self.xrng_1,self.yrng_0,self.yrng_1])]
+                filed['num_header_lines']+=len(addlines)
+            else:
+                addlines=[]
+            headstrlist=['%d\t%d\t%d\t%d' %(1, filed['num_data_columns'], filed['num_data_rows'], filed['num_header_lines']-2)]
+            headstrlist+=addlines
             headstrlist+=['raman_file_lines_spectra: %s' %','.join(['%d' %fileind_filelines[i] for i in inds_fileinds])]
             s='\n'.join(headstrlist+['\t'.join([v for v in l]) for l in strlist])
 
@@ -274,10 +278,14 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
                 f.write(s)
             self.sampleComboBox.insertItem(count, '%d (%d)' %(smpv, len(inds_fileinds)))
             self.samplespectra_filedlist+=[filed]
+            self.avespectra_filedlist+=[None]
         self.plotw_xy.axes.cla()
     
     def readresultsfolder(self):
         folder=str(self.savepathLineEdit.text())
+        if not os.path.isdir(folder):
+            messageDialog(self, 'select valid save folder and try again').exec_()
+            return
         fns=os.listdir(folder)
         fns_select=sorted([fn for fn in fns if fn.endswith('selectspectra.rmn')])
 
