@@ -453,14 +453,15 @@ if __name__ == "__main__":
 #            self.visui.importana(p=p)
 #            self.visui.plotfom()
 
-            self.parseui.rawpathLineEdit.setText('K:/users/hte/Raman/30058/30058-map--5s-.txt')
-            self.parseui.infopathLineEdit.setText('K:/users/hte/Raman/30058/30058-map--5s-.pck')
-            self.parseui.savepathLineEdit.setText(r'K:\users\hte\Raman\30058\curated_EM_components_Sm2MnNiO6_type_30058')
-            self.parseui.infokeysLineEdit.setText('platemap 28 sample no,x_range0,x_range1,y_range0,y_range1')
-            sampletablefile=r'K:\users\hte\Raman\30058\30058_map28_curated_EM_components_Sm2MnNiO6_type.txt'
-            with open(sampletablefile, mode='r') as f:
-                filestr=f.read()
-            self.parseui.sampleinfoTextBrowser.setText(filestr)
+#            self.parseui.rawpathLineEdit.setText('K:/users/hte/Raman/30058/30058-map--5s-.txt')
+#            self.parseui.infopathLineEdit.setText('K:/users/hte/Raman/30058/30058-map--5s-.pck')
+#            self.parseui.savepathLineEdit.setText(r'K:\users\hte\Raman\30058\curated_EM_components_Sm2MnNiO6_type_30058')
+#            self.parseui.infokeysLineEdit.setText('platemap 28 sample no,x_range0,x_range1,y_range0,y_range1')
+#            sampletablefile=r'K:\users\hte\Raman\30058\30058_map28_curated_EM_components_Sm2MnNiO6_type.txt'
+#            with open(sampletablefile, mode='r') as f:
+#                filestr=f.read()
+#            self.parseui.sampleinfoTextBrowser.setText(filestr)
+#            
 #            self.parseui.rawpathLineEdit.setText('K:/users/hte/Raman/30058/30058-map--5s-.txt')
 #            self.parseui.infopathLineEdit.setText('K:/users/hte/Raman/30058/20160511test/30058-map--5s-.pck')
 #            self.parseui.savepathLineEdit.setText(r'K:\users\hte\Raman\30058\20160511test')
