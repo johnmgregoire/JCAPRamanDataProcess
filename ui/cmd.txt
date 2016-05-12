@@ -1,0 +1,3 @@
+pyuic -x D:\Google Drive\Documents\PythonCode\JCAP\JCAPRamanDataProcess\ui\DataParseDialog.ui -o D:\Google Drive\Documents\PythonCode\JCAP\JCAPRamanDataProcess\ui\DataParseDialog.py
+
+
