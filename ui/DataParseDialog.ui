@@ -22,6 +22,10 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Paste the path to the Renishaw file here or use &quot;select&quot; to choose it.
+This is required beofre &quot;Get Raman File Info&quot; or &quot;Extract Raman Spectra&quot;</string>
+   </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
@@ -74,6 +78,10 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Creating this *__info.pck takes time so select it if you have already created it. 
+Required before &quot;Match Raman File&quot; or &quot;Extract Raman Spectra&quot;</string>
+   </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
@@ -87,6 +95,9 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Select existing *__info.pck file, and then &quot;Get Raman Info&quot; will run.</string>
+   </property>
    <property name="text">
     <string>select</string>
    </property>
@@ -99,6 +110,10 @@
      <width>261</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Where the .map file and the select spectra will be saved. Required before
+&quot;Match Raman File&quot; or &quot;copy map&quot; or &quot;Extract&quot;, etc.</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -138,6 +153,11 @@
      <width>281</width>
      <height>321</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Table with 5 required columns needed to generate .map file.
+This can have extra columns and the column headings can be anything as long as
+the 5 required columns are present with headings listed below.</string>
    </property>
    <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -188,6 +208,9 @@ sample_no,xrng_0,xrng_1,yrng_0,yrng_1</string>
      <height>20</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>The names of the 5 column headings must be entered here.</string>
+   </property>
    <property name="text">
     <string>sample_no,xrng_0,xrng_1,yrng_0,yrng_1</string>
    </property>
@@ -204,6 +227,10 @@ sample_no,xrng_0,xrng_1,yrng_0,yrng_1</string>
      <height>41</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Either creates the *__info.pck from the *.txt or read the .pck if it already exists. 
+This is general info on the file and independent of choosing samples</string>
+   </property>
    <property name="text">
     <string>Get Raman File Info
 (read pck if exists)</string>
@@ -217,6 +244,10 @@ sample_no,xrng_0,xrng_1,yrng_0,yrng_1</string>
      <width>111</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Creates raman_sample_index_map.map in the save spectra folder
+which contains the list of sample_no and the spectrum indeces that belong to it.</string>
    </property>
    <property name="text">
     <string>Match Raman File to
@@ -232,6 +263,10 @@ Select Sample Table</string>
      <height>31</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Saves the selected spectra in Sample*_selectspectra.rmn files in save folder. 
+The table and column names must be entered first.</string>
+   </property>
    <property name="text">
     <string>Extract Raman
 Spectra to File</string>
@@ -246,6 +281,10 @@ Spectra to File</string>
      <height>22</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>For each line in the Select Sample Table shows the sampl_no (# of Raman spectra found).
+Selecting a menu option will cause the plots to update.</string>
+   </property>
   </widget>
   <widget class="QComboBox" name="plotComboBox">
    <property name="geometry">
@@ -255,6 +294,9 @@ Spectra to File</string>
      <width>141</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Select the algorithm for generating plots  based on teh set of spectra for the sample_no selected above</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -302,6 +344,9 @@ Spectra to File</string>
      <height>23</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>If creating *__info.pck file for the first time select the &quot;new&quot; path here.</string>
+   </property>
    <property name="text">
     <string>new</string>
    </property>
@@ -314,6 +359,9 @@ Spectra to File</string>
      <width>51</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Choose a previosuly-generated raman_sample_index_map.map or one that you made custom.</string>
    </property>
    <property name="text">
     <string>OR copy
@@ -328,6 +376,9 @@ map file</string>
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Read .rmn files from &quot;save spectra folder&quot; for plotting only</string>
    </property>
    <property name="text">
     <string>Read Save
@@ -353,6 +404,9 @@ Spectra Folder</string>
      <height>31</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>create Sample*_ave.rmn files</string>
+   </property>
    <property name="text">
     <string>Save Ave Spectrum
  for each sample</string>
@@ -366,6 +420,9 @@ Spectra Folder</string>
      <width>151</width>
      <height>211</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>General info on the Raman file. If text appears here then the &quot;Get Raman File Info&quot; successfully completed.</string>
    </property>
   </widget>
  </widget>

@@ -121,29 +121,54 @@ class Ui_DataParseDialog(object):
 
     def retranslateUi(self, DataParseDialog):
         DataParseDialog.setWindowTitle(_translate("DataParseDialog", "Dialog", None))
+        self.rawpathLineEdit.setToolTip(_translate("DataParseDialog", "Paste the path to the Renishaw file here or use \"select\" to choose it.\n"
+"This is required beofre \"Get Raman File Info\" or \"Extract Raman Spectra\"", None))
         self.label.setText(_translate("DataParseDialog", "Renishaw txt file", None))
         self.rawpathPushButton.setText(_translate("DataParseDialog", "select", None))
         self.label_2.setText(_translate("DataParseDialog", "Renishaw info pck file", None))
+        self.infopathLineEdit.setToolTip(_translate("DataParseDialog", "Creating this *__info.pck takes time so select it if you have already created it. \n"
+"Required before \"Match Raman File\" or \"Extract Raman Spectra\"", None))
+        self.infopathPushButton.setToolTip(_translate("DataParseDialog", "Select existing *__info.pck file, and then \"Get Raman Info\" will run.", None))
         self.infopathPushButton.setText(_translate("DataParseDialog", "select", None))
+        self.savepathLineEdit.setToolTip(_translate("DataParseDialog", "Where the .map file and the select spectra will be saved. Required before\n"
+"\"Match Raman File\" or \"copy map\" or \"Extract\", etc.", None))
         self.savepathPushButton.setText(_translate("DataParseDialog", "Browse", None))
         self.label_3.setText(_translate("DataParseDialog", "save spectra folder", None))
+        self.sampleinfoTextBrowser.setToolTip(_translate("DataParseDialog", "Table with 5 required columns needed to generate .map file.\n"
+"This can have extra columns and the column headings can be anything as long as\n"
+"the 5 required columns are present with headings listed below.", None))
         self.label_4.setText(_translate("DataParseDialog", "Select Sample Table (tab-deliminated)", None))
         self.label_5.setText(_translate("DataParseDialog", "column names for\n"
 "sample_no,xrng_0,xrng_1,yrng_0,yrng_1", None))
+        self.infokeysLineEdit.setToolTip(_translate("DataParseDialog", "The names of the 5 column headings must be entered here.", None))
         self.infokeysLineEdit.setText(_translate("DataParseDialog", "sample_no,xrng_0,xrng_1,yrng_0,yrng_1", None))
+        self.getinfoPushButton.setToolTip(_translate("DataParseDialog", "Either creates the *__info.pck from the *.txt or read the .pck if it already exists. \n"
+"This is general info on the file and independent of choosing samples", None))
         self.getinfoPushButton.setText(_translate("DataParseDialog", "Get Raman File Info\n"
 "(read pck if exists)", None))
+        self.matchPushButton.setToolTip(_translate("DataParseDialog", "Creates raman_sample_index_map.map in the save spectra folder\n"
+"which contains the list of sample_no and the spectrum indeces that belong to it.", None))
         self.matchPushButton.setText(_translate("DataParseDialog", "Match Raman File to\n"
 "Select Sample Table", None))
+        self.extractPushButton.setToolTip(_translate("DataParseDialog", "Saves the selected spectra in Sample*_selectspectra.rmn files in save folder. \n"
+"The table and column names must be entered first.", None))
         self.extractPushButton.setText(_translate("DataParseDialog", "Extract Raman\n"
 "Spectra to File", None))
+        self.sampleComboBox.setToolTip(_translate("DataParseDialog", "For each line in the Select Sample Table shows the sampl_no (# of Raman spectra found).\n"
+"Selecting a menu option will cause the plots to update.", None))
+        self.plotComboBox.setToolTip(_translate("DataParseDialog", "Select the algorithm for generating plots  based on teh set of spectra for the sample_no selected above", None))
         self.label_6.setText(_translate("DataParseDialog", "sample (# spectra)", None))
         self.label_7.setText(_translate("DataParseDialog", "plot style", None))
+        self.infopathnewPushButton.setToolTip(_translate("DataParseDialog", "If creating *__info.pck file for the first time select the \"new\" path here.", None))
         self.infopathnewPushButton.setText(_translate("DataParseDialog", "new", None))
+        self.copymatchPushButton.setToolTip(_translate("DataParseDialog", "Choose a previosuly-generated raman_sample_index_map.map or one that you made custom.", None))
         self.copymatchPushButton.setText(_translate("DataParseDialog", "OR copy\n"
 "map file", None))
+        self.readfolderPushButton.setToolTip(_translate("DataParseDialog", "Read .rmn files from \"save spectra folder\" for plotting only", None))
         self.readfolderPushButton.setText(_translate("DataParseDialog", "Read Save\n"
 "Spectra Folder", None))
+        self.avePushButton.setToolTip(_translate("DataParseDialog", "create Sample*_ave.rmn files", None))
         self.avePushButton.setText(_translate("DataParseDialog", "Save Ave Spectrum\n"
 " for each sample", None))
+        self.ramaninfoTextBrowser.setToolTip(_translate("DataParseDialog", "General info on the Raman file. If text appears here then the \"Get Raman File Info\" successfully completed.", None))
 

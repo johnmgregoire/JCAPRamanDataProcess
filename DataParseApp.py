@@ -44,6 +44,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         self.processclass_ave=processspectrafile()
         self.plotwsetup()
         self.xrng_0=None
+        self.smp_inds_list=None
         
     def selectrawpath(self, markstr='Renishaw .txt file from file converter'):
         le=self.rawpathLineEdit
@@ -51,6 +52,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
     def selectinfopath(self, markstr='File for saving Raman metadata'):
         le=self.infopathLineEdit
         self.selectfile(le=le, markstr=markstr, new=False)
+        self.getinfo()
     def selectinfopathnew(self, markstr='File for saving Raman metadata'):
         le=self.infopathLineEdit
         self.selectfile(le=le, markstr=markstr, new=True)
@@ -210,6 +212,9 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         self.match(copypath=p)
         
     def extract(self):
+        if self.smp_inds_list is None:
+            messageDialog(self, 'Need to run "Match Raman File" ot "copy map file" first').exec_()
+            return
         ramanfp=str(self.rawpathLineEdit.text())
         tryagain=not os.path.isfile(ramanfp)
         while tryagain:
