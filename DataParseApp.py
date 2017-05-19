@@ -73,15 +73,16 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
             le.setText(folderpath)
         return folderpath
         
-    def getinfo(self):
-        ramaninfop=str(self.infopathLineEdit.text())
+    def getinfo(self, ramaninfop=None, ramanfp=None):
+        if ramaninfop is None:
+            ramaninfop=str(self.infopathLineEdit.text())
         if os.path.isfile(ramaninfop):
-            with open(ramaninfop, mode='r') as f:
+            with open(ramaninfop, mode='rb') as f:
                 self.ramaninfod=pickle.load(f)
                 self.updateinfobrowser()
             return
-        
-        ramanfp=str(self.rawpathLineEdit.text())
+        if ramanfp is None:
+            ramanfp=str(self.rawpathLineEdit.text())
         tryagain=not os.path.isfile(ramanfp)
         while tryagain:
             self.selectrawpath()
@@ -127,7 +128,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         ramaninfop=str(self.infopathLineEdit.text())
         if len(ramaninfop)>0:
             try:
-                with open(ramaninfop, mode='w') as f:
+                with open(ramaninfop, mode='wb') as f:
                     pickle.dump(self.ramaninfod, f)
             except:
                 messageDialog(self, 'Failed to save info file').exec_()
@@ -181,7 +182,7 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
             with open(smp_spectrumindex_map_path, mode='r') as f:
                 lines=f.readlines()
             strpairs=[l.split(':') for l in lines]
-            self.smp_inds_list=[(int(smpstr), numpy.int32(indsstr.split(','))) for smpstr, indsstr in strpairs]
+            self.smp_inds_list=[(int(smpstr), numpy.int32(indsstr.strip().split(','))) for smpstr, indsstr in strpairs]
             return False
             
         errormsg=self.readinfotable()
@@ -210,7 +211,13 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         if len(p)==0:
             return
         self.match(copypath=p)
-        
+    
+    def readfullramanarray(self, ramanfp):
+        with open(ramanfp,'r') as f:
+            header=[f.readline() for count in range(self.ramaninfod['Spectrum 0 index'])]
+            data=numpy.abs(numpy.float32([map(float, f.readline().partition(':')[2].strip().rstrip(',').split(',')) for count in range(self.ramaninfod['number of spectra'])]))
+        return data
+
     def extract(self):
         if self.smp_inds_list is None:
             messageDialog(self, 'Need to run "Match Raman File" ot "copy map file" first').exec_()
