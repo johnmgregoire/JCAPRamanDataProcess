@@ -40,8 +40,8 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         for button, fcn in button_fcn:
             QObject.connect(button, SIGNAL("pressed()"), fcn)
         self.ramaninfod={}
-        self.processclass=processspectrafile()
-        self.processclass_ave=processspectrafile()
+        self.processclass=processspectrafile(uiclass=self)
+        self.processclass_ave=processspectrafile(uiclass=self)
         self.plotwsetup()
         self.xrng_0=None
         self.smp_inds_list=None
@@ -406,11 +406,11 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         self.plotw_xy.fig.canvas.draw()
         self.plotw_xy2.fig.canvas.draw()
 class processspectrafile():
-    def __init__(self):
+    def __init__(self, uiclass=None):
         self.fcnnamelist=['first', 'random10', 'minarea', 'maxarea', 'area3points', 'area5points', 'area9points', 'mindiff', 'maxdiff', 'diff3points', 'diff9points', 'mean']
         self.fcns=[self.first, self.random10, self.minarea, self.maxarea, self.minmaxmidarea, self.area5points, self.area9points, self.mindiff, self.maxdiff, self.diff3points, self.diff9points, self.meanfcn]
         self.fcndict=dict([(k, fcn) for k, fcn in zip(self.fcnnamelist, self.fcns)])
-    
+        self.uiclass=uiclass
     def setfiled(self, filed):
         self.filed=filed
     def readselcols(self, selcolinds=None):
@@ -460,10 +460,23 @@ class processspectrafile():
         return self.mindiff(indlist_or_numpts=3)
     def diff9points(self):
         return self.mindiff(indlist_or_numpts=9)
-    def meanfcn(self):
+    def meanfcn(self, fracspectratoremove='user entered'):
         arr=self.readselcols(selcolinds=None)
-        m=arr[1:].mean(axis=0)
-        return arr[0], [m]
+        if fracspectratoremove=='user entered' and not self.uiclass is None:
+            fracspectratoremove=float(self.uiclass.OutlierAveDoubleSpinBox.value())
+        if isinstance(fracspectratoremove, float):
+            numspectra=len(arr)-1
+            numtoremove=int(min(numspectra-1, numpy.ceil(numspectra*fracspectratoremove)))
+        else:
+            numtoremove=0
+        wn=arr[0]
+        arr=arr[1:]
+        for count in range(numtoremove):
+            m=arr.mean(axis=0)
+            inds=numpy.argsort([((v-m)**2).sum() for v in arr])
+            arr=arr[inds[:-1]]
+        m=arr.mean(axis=0)
+        return wn, [m]
 if __name__ == "__main__":
     class MainMenu(QMainWindow):
         def __init__(self, previousmm, execute=True, **kwargs):

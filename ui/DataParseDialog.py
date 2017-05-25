@@ -95,7 +95,7 @@ class Ui_DataParseDialog(object):
         self.label_7.setGeometry(QtCore.QRect(300, 240, 141, 16))
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.textBrowser_xy = QtGui.QTextBrowser(DataParseDialog)
-        self.textBrowser_xy.setGeometry(QtCore.QRect(460, 10, 491, 301))
+        self.textBrowser_xy.setGeometry(QtCore.QRect(490, 10, 491, 301))
         self.textBrowser_xy.setObjectName(_fromUtf8("textBrowser_xy"))
         self.infopathnewPushButton = QtGui.QPushButton(DataParseDialog)
         self.infopathnewPushButton.setGeometry(QtCore.QRect(220, 60, 51, 23))
@@ -107,14 +107,22 @@ class Ui_DataParseDialog(object):
         self.readfolderPushButton.setGeometry(QtCore.QRect(370, 100, 81, 31))
         self.readfolderPushButton.setObjectName(_fromUtf8("readfolderPushButton"))
         self.textBrowser_xy2 = QtGui.QTextBrowser(DataParseDialog)
-        self.textBrowser_xy2.setGeometry(QtCore.QRect(460, 320, 491, 301))
+        self.textBrowser_xy2.setGeometry(QtCore.QRect(490, 320, 491, 301))
         self.textBrowser_xy2.setObjectName(_fromUtf8("textBrowser_xy2"))
         self.avePushButton = QtGui.QPushButton(DataParseDialog)
-        self.avePushButton.setGeometry(QtCore.QRect(290, 140, 141, 31))
+        self.avePushButton.setGeometry(QtCore.QRect(280, 140, 111, 31))
         self.avePushButton.setObjectName(_fromUtf8("avePushButton"))
         self.ramaninfoTextBrowser = QtGui.QTextBrowser(DataParseDialog)
         self.ramaninfoTextBrowser.setGeometry(QtCore.QRect(300, 290, 151, 211))
         self.ramaninfoTextBrowser.setObjectName(_fromUtf8("ramaninfoTextBrowser"))
+        self.OutlierAveDoubleSpinBox = QtGui.QDoubleSpinBox(DataParseDialog)
+        self.OutlierAveDoubleSpinBox.setGeometry(QtCore.QRect(420, 170, 41, 22))
+        self.OutlierAveDoubleSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
+        self.OutlierAveDoubleSpinBox.setProperty("value", 0.05)
+        self.OutlierAveDoubleSpinBox.setObjectName(_fromUtf8("OutlierAveDoubleSpinBox"))
+        self.label_8 = QtGui.QLabel(DataParseDialog)
+        self.label_8.setGeometry(QtCore.QRect(400, 130, 91, 41))
+        self.label_8.setObjectName(_fromUtf8("label_8"))
 
         self.retranslateUi(DataParseDialog)
         QtCore.QMetaObject.connectSlotsByName(DataParseDialog)
@@ -171,4 +179,10 @@ class Ui_DataParseDialog(object):
         self.avePushButton.setText(_translate("DataParseDialog", "Save Ave Spectrum\n"
 " for each sample", None))
         self.ramaninfoTextBrowser.setToolTip(_translate("DataParseDialog", "General info on the Raman file. If text appears here then the \"Get Raman File Info\" successfully completed.", None))
+        self.OutlierAveDoubleSpinBox.setToolTip(_translate("DataParseDialog", "Take this fraction of the number of \n"
+"spectra about to be averaged and remove the highest difference from mean\n"
+"using sum-of-squares to compare spectra.\n"
+"This happens in saving and plotting to set to 0 for quick calculation.", None))
+        self.label_8.setText(_translate("DataParseDialog", "Frac spectra to\n"
+"remove as outliers", None))
 

@@ -328,7 +328,7 @@ Selecting a menu option will cause the plots to update.</string>
   <widget class="QTextBrowser" name="textBrowser_xy">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>490</x>
      <y>10</y>
      <width>491</width>
      <height>301</height>
@@ -388,7 +388,7 @@ Spectra Folder</string>
   <widget class="QTextBrowser" name="textBrowser_xy2">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>490</x>
      <y>320</y>
      <width>491</width>
      <height>301</height>
@@ -398,9 +398,9 @@ Spectra Folder</string>
   <widget class="QPushButton" name="avePushButton">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>280</x>
      <y>140</y>
-     <width>141</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -423,6 +423,42 @@ Spectra Folder</string>
    </property>
    <property name="toolTip">
     <string>General info on the Raman file. If text appears here then the &quot;Get Raman File Info&quot; successfully completed.</string>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="OutlierAveDoubleSpinBox">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>170</y>
+     <width>41</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Take this fraction of the number of 
+spectra about to be averaged and remove the highest difference from mean
+using sum-of-squares to compare spectra.
+This happens in saving and plotting to set to 0 for quick calculation.</string>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::NoButtons</enum>
+   </property>
+   <property name="value">
+    <double>0.050000000000000</double>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>130</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Frac spectra to
+remove as outliers</string>
    </property>
   </widget>
  </widget>
