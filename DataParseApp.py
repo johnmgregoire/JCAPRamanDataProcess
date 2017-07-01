@@ -388,10 +388,10 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         fileind=int(self.sampleComboBox.currentIndex())
         self.processclass.setfiled(self.samplespectra_filedlist[fileind])
         fcnname=str(self.plotComboBox.currentText())
-        x, ylist=self.processclass.fcndict[fcnname]()
-        for count, y in enumerate(ylist):
+        self.plot_x, self.plot_ylist=self.processclass.fcndict[fcnname]()
+        for count, y in enumerate(self.plot_ylist):
             c=self.xyplotcolorrotation[count%len(self.xyplotcolorrotation)]
-            self.plotw_xy.axes.plot(x, y, c)
+            self.plotw_xy.axes.plot(self.plot_x, y, c)
         
         
         
@@ -407,8 +407,8 @@ class dataparseDialog(QDialog, Ui_DataParseDialog):
         self.plotw_xy2.fig.canvas.draw()
 class processspectrafile():
     def __init__(self, uiclass=None):
-        self.fcnnamelist=['first', 'random10', 'minarea', 'maxarea', 'area3points', 'area5points', 'area9points', 'mindiff', 'maxdiff', 'diff3points', 'diff9points', 'mean']
-        self.fcns=[self.first, self.random10, self.minarea, self.maxarea, self.minmaxmidarea, self.area5points, self.area9points, self.mindiff, self.maxdiff, self.diff3points, self.diff9points, self.meanfcn]
+        self.fcnnamelist=['first', 'random10', 'minarea', 'maxarea', 'area3points', 'area5points', 'area9points', 'mindiff', 'maxdiff', 'diff3points', 'diff9points', 'mean', 'all']
+        self.fcns=[self.first, self.random10, self.minarea, self.maxarea, self.minmaxmidarea, self.area5points, self.area9points, self.mindiff, self.maxdiff, self.diff3points, self.diff9points, self.meanfcn, self.all]
         self.fcndict=dict([(k, fcn) for k, fcn in zip(self.fcnnamelist, self.fcns)])
         self.uiclass=uiclass
     def setfiled(self, filed):
@@ -477,6 +477,9 @@ class processspectrafile():
             arr=arr[inds[:-1]]
         m=arr.mean(axis=0)
         return wn, [m]
+    def all(self):
+        arr=self.readselcols(selcolinds=None)
+        return arr[0], arr[1:]
 if __name__ == "__main__":
     class MainMenu(QMainWindow):
         def __init__(self, previousmm, execute=True, **kwargs):
