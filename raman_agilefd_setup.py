@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 plt.ion()
 from DataParseApp import dataparseDialog
 from sklearn.decomposition import NMF
-
+from PlateAlignViaEdge_v7 import MainMenu
+from PlateAlignViaEdge_v7 import saveudi
 
 projectpath=os.path.split(os.path.abspath(__file__))[0]
 sys.path.append(os.path.join(projectpath,'ui'))
@@ -31,22 +32,12 @@ platemapvisprocesspath=os.path.join(pythoncodepath, 'JCAPPlatemapVisualize')
 sys.path.append(platemapvisprocesspath)
 from plate_image_align_Dialog import plateimagealignDialog
 
-class MainMenu(QMainWindow):
-    def __init__(self, previousmm, execute=True, **kwargs):
-        super(MainMenu, self).__init__(None)
-        self.parseui=dataparseDialog(self, title='Visualize ANA, EXP, RUN data', **kwargs)
-        self.alignui=plateimagealignDialog(self, manual_image_init_bool=False)
-        if execute:
-            self.parseui.exec_()
-
-
 
 avefiles=[]
 parentfold=r'K:\users\hte\Raman\39664\for AgileFD'
 sys.path.append(parentfold)
 from parameters_agilefd import *
 
-gen_smp_substrate_spect=0
 
 smp_fold=os.path.join(parentfold,'samples')
 smp_spect_fold=os.path.join(parentfold,'samples','sample_spectra')
@@ -74,12 +65,11 @@ if gen_smp_substrate_spect:
     
     for x in avefiles:
         if os.path.basename(x).split('Sample')[-1][0]=='-':
-            shutil.copyfile(x,os.path.join(substrate_spect_fold,os.path.basename(x)))
+            copyfile(x,os.path.join(substrate_spect_fold,os.path.basename(x)))
         else:
-            shutil.copyfile(x,os.path.join(smp_spect_fold,os.path.basename(x)))
+            copyfile(x,os.path.join(smp_spect_fold,os.path.basename(x)))
 
 
-gen_udis=1
 
 if gen_udis:
     mainapp=QApplication(sys.argv)
@@ -89,15 +79,4 @@ if gen_udis:
     substrate_pathd={'spectrafolder':substrate_spect_fold,'udibasepath':substrate_fold}
     for pathd in [smp_pathd,substrate_pathd]:    
         visui.openontheflyfolder(folderpath=pathd['spectrafolder'], plateidstr=plateidstr)
-        savep=pathd['udibasepath']+'all.udi'
-        visui.get_xy_plate_info_browsersamples(saveudibool=True, ternary_el_inds_for_udi_export=udi_ternary_projection_inds, savep=savep)
-        for i, indstup in enumerate(itertools.combinations(range(len(visui.ellabels)), 3)):
-            excludeinds=[ind for ind in range(len(visui.ellabels)) if not ind in indstup]
-            inds_where_excluded_els_all_zero=numpy.where(visui.fomplotd['comps'][:, excludeinds].max(axis=1)==0)[0]
-            if len(inds_where_excluded_els_all_zero)==0:
-                continue
-            smplist=[visui.fomplotd['sample_no'][fomplotind] for fomplotind in inds_where_excluded_els_all_zero]
-            visui.remallsamples()
-            visui.addrem_select_fomplotdinds(remove=False, smplist=smplist)
-            savep=''.join([pathd['udibasepath']]+[visui.ellabels[ind] for ind in indstup]+['.udi'])
-            visui.get_xy_plate_info_browsersamples(saveudibool=True, ternary_el_inds_for_udi_export=indstup, savep=savep)
+        saveudi(visui,pathd,udi_ternary,udi_ternary_projection_inds,plateidstr)
