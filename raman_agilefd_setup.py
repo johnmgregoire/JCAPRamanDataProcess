@@ -13,9 +13,10 @@ import matplotlib.pyplot as plt
 plt.ion()
 from DataParseApp import dataparseDialog
 from sklearn.decomposition import NMF
-from PlateAlignViaEdge_v7 import MainMenu
-from PlateAlignViaEdge_v7 import saveudi
+#from PlateAlignViaEdge_v7 import *
 
+from PlateAlignViaEdge_v8 import MainMenu,save_raman_udi
+#print dasf
 projectpath=os.path.split(os.path.abspath(__file__))[0]
 sys.path.append(os.path.join(projectpath,'ui'))
 
@@ -33,12 +34,13 @@ sys.path.append(platemapvisprocesspath)
 from plate_image_align_Dialog import plateimagealignDialog
 
 
+
 avefiles=[]
 parentfold=r'K:\users\hte\Raman\39664\for AgileFD'
 sys.path.append(parentfold)
 from parameters_agilefd import *
 
-
+print plateidstr
 smp_fold=os.path.join(parentfold,'samples')
 smp_spect_fold=os.path.join(parentfold,'samples','sample_spectra')
 
@@ -65,7 +67,8 @@ if gen_smp_substrate_spect:
     
     for x in avefiles:
         if os.path.basename(x).split('Sample')[-1][0]=='-':
-            copyfile(x,os.path.join(substrate_spect_fold,os.path.basename(x)))
+            newf=x.replace('Sample-','Sample')
+            copyfile(x,os.path.join(substrate_spect_fold,os.path.basename(newf)))
         else:
             copyfile(x,os.path.join(smp_spect_fold,os.path.basename(x)))
 
@@ -75,8 +78,11 @@ if gen_udis:
     mainapp=QApplication(sys.argv)
     form=MainMenu(None, execute=False)    
     visui=visdataDialog(form, title='Visualize ANA, EXP, RUN data')
-    smp_pathd={'spectrafolder':smp_spect_fold,'udibasepath':smp_fold}
-    substrate_pathd={'spectrafolder':substrate_spect_fold,'udibasepath':substrate_fold}
+    smp_pathd={'spectrafolder':smp_spect_fold,'udibasepath':os.path.join(smp_fold,'ave_rmn_')}
+    substrate_pathd={'spectrafolder':substrate_spect_fold,'udibasepath':os.path.join(substrate_fold,'ave_rmn_')}
+    i=0
     for pathd in [smp_pathd,substrate_pathd]:    
-        visui.openontheflyfolder(folderpath=pathd['spectrafolder'], plateidstr=plateidstr)
-        saveudi(visui,pathd,udi_ternary,udi_ternary_projection_inds,plateidstr)
+#        visui.exec_() 
+        print i
+        i+=1
+        save_raman_udi(visui,pathd,udi_ternary_projection_inds,plateidstr,saveall=False)
