@@ -4,19 +4,18 @@ Created on Fri Jun 30 16:09:50 2017
 
 @author: sksuram
 """
-import sys,os, pickle, numpy, pylab, operator, itertools
+import sys,os, pickle, numpy, pylab, operator, itertools,numpy as np
 import cv2
 from shutil import copy as copyfile
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 import matplotlib.pyplot as plt
 plt.ion()
 from DataParseApp import dataparseDialog
 from sklearn.decomposition import NMF
-#from PlateAlignViaEdge_v7 import *
 
 from PlateAlignViaEdge_v8 import MainMenu,save_raman_udi
-#print dasf
 projectpath=os.path.split(os.path.abspath(__file__))[0]
 sys.path.append(os.path.join(projectpath,'ui'))
 
@@ -32,8 +31,6 @@ from fcns_io import *
 platemapvisprocesspath=os.path.join(pythoncodepath, 'JCAPPlatemapVisualize')
 sys.path.append(platemapvisprocesspath)
 from plate_image_align_Dialog import plateimagealignDialog
-
-
 
 avefiles=[]
 parentfold=r'K:\users\hte\Raman\39664\for AgileFD'
@@ -80,9 +77,16 @@ if gen_udis:
     visui=visdataDialog(form, title='Visualize ANA, EXP, RUN data')
     smp_pathd={'spectrafolder':smp_spect_fold,'udibasepath':os.path.join(smp_fold,'ave_rmn_')}
     substrate_pathd={'spectrafolder':substrate_spect_fold,'udibasepath':os.path.join(substrate_fold,'ave_rmn_')}
-    i=0
     for pathd in [smp_pathd,substrate_pathd]:    
 #        visui.exec_() 
-        print i
-        i+=1
         save_raman_udi(visui,pathd,udi_ternary_projection_inds,plateidstr,saveall=False)
+
+
+def combineudis(smp_fn,substrate_fn):
+    smp_udid=readudi(smp_fn)
+    substrate_udid=readudi(substrate_fn)
+    substrate_udid['sample_no']=-np.array(substrate_udid['sample_no'])
+    combine_udi_d=dict([(k,smp_udid[k] if k in ['ellabels'] or not isinstance(smp_udid[k],(list,np.ndarray)) else np.array(list(smp_udid[k])+list(substrate_udid[k]))) for k in smp_udid.keys()])
+    writeudifile(os.path.join(parentfold,'smp_substrate_'+os.path.basename(smp_fn)),combine_udi_d)
+    
+[combineudis(os.path.join(smp_fold,x),os.path.join(substrate_fold,x)) for x in os.listdir(smp_fold) if os.path.splitext(x)[-1]=='.udi']
